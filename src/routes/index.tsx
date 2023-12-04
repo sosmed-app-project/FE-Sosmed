@@ -2,14 +2,16 @@ import { createBrowserRouter, RouterProvider } from 'react-router-dom';
 
 import Login from '@/pages/auth/login';
 import Register from '@/pages/auth/register';
+import Navbar from '@/components/navbar';
+import Home from '@/pages';
 
 
 export default function Router() {
   const routes = [
-    // {
-    //   path: '/',
-    //   element: <Home />,
-    // },
+    {
+      path: '/',
+      element: <Home />,
+    },
     {
         path: '/login',
         element: <Login />,
@@ -18,6 +20,11 @@ export default function Router() {
         path: '/register',
         element: <Register />,
       },
+      {
+        path: '/navbar',
+        element: <Navbar />,
+      },
+    
    
     {
       path: '*',
