@@ -8,7 +8,7 @@ const index = () => {
   <Navbar/>
   <Sidebar>
    
-    <div className=" ">aksdbhajbdsasssssssdadasdasdssssssssssssssssssssssssssssssssssssss</div>
+    <div className=" ">akhajbdsasssssssdadasdasdssssssssssssssssssssssssssssssssssssss</div>
   </Sidebar>
     
   
