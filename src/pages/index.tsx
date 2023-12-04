@@ -7,8 +7,8 @@ const index = () => {
    <section>
   <Navbar/>
   <Sidebar>
-    aksdbhajbdsasssssssdadasdasdssssssssssssssssssssssssssssssssssssss
-    <div className="flex-1 min-h-screen overflow-y-auto">aksdbhajbdsasssssssdadasdasdssssssssssssssssssssssssssssssssssssss</div>
+   
+    <div className=" ">aksdbhajbdsasssssssdadasdasdssssssssssssssssssssssssssssssssssssss</div>
   </Sidebar>
     
   

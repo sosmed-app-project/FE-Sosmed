@@ -25,7 +25,6 @@ export default function Router() {
         element: <Navbar />,
       },
     
-   
     {
       path: '*',
       element: <div>404 page not found</div>,
