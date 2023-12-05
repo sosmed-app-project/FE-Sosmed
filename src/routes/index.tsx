@@ -4,6 +4,7 @@ import Login from '@/pages/auth/login';
 import Register from '@/pages/auth/register';
 import Navbar from '@/components/navbar';
 import Home from '@/pages';
+import Profile from '@/pages/profile';
 
 
 export default function Router() {
@@ -23,6 +24,10 @@ export default function Router() {
       {
         path: '/navbar',
         element: <Navbar />,
+      },
+      {
+        path: '/profile',
+        element: <Profile />,
       },
     
     {

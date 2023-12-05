@@ -1,5 +1,5 @@
 {
-  "name": "library-app",
+  "name": "Sosmed-App",
   "private": true,
   "version": "0.0.0",
   "type": "module",
@@ -42,7 +42,7 @@
     "eslint": "^8.45.0",
     "eslint-plugin-react-hooks": "^4.6.0",
     "eslint-plugin-react-refresh": "^0.4.3",
-    "postcss": "^8.4.31",
+    "postcss": "^8.4.32",
     "tailwindcss": "^3.3.5",
     "typescript": "^5.0.2",
     "vite": "^4.4.5"

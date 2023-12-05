@@ -5,6 +5,7 @@ import Sidebar from '@/components/sidebar'
 const index = () => {
   return (
    <section>
+   
   <Navbar/>
   <Sidebar>
    

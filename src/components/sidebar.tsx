@@ -1,4 +1,5 @@
 import  { ReactNode } from "react";
+import { Link, useNavigate } from "react-router-dom";
 
 interface SidebarProps {
   children: ReactNode;
@@ -19,12 +20,11 @@ const Sidebar = ({ children }: SidebarProps) => {
             </a>
           </li>
           <li>
-            <a
-              href="#Profile"
+            <Link to={"/profile"}
               className="block text-start  text-black font-semibold p-3 transition-all duration-300 bg-gray-100 hover:bg-gray-400   hover:shadow-md hover:rounded-lg"
             >
               <i className="fa-regular fa-circle-user w-11 "></i> Profile
-            </a>
+            </Link>
           </li>
           <li>
             <a
@@ -45,9 +45,9 @@ const Sidebar = ({ children }: SidebarProps) => {
         {/* Sidebar Content */}
         <ul>
           <li className="mb-4">
-            <a href="#profile" className="text-blue-600 font-semibold">
+            <Link className="text-blue-600 font-semibold" to=" /profile">
               Profile
-            </a>
+            </Link>
           </li>
           <li>
             <a href="#settings" className="text-blue-600 font-semibold">
