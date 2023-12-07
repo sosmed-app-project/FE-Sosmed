@@ -6,6 +6,7 @@ import { useNavigate } from "react-router-dom";
 const ProfileEdit = () => {
   const navigate = useNavigate();
   const handleSimpan = () => {
+    
     navigate("/profile");
   };
   return (

@@ -3,8 +3,9 @@ import { createBrowserRouter, RouterProvider } from 'react-router-dom';
 import Login from '@/pages/auth/login';
 import Register from '@/pages/auth/register';
 import Home from '@/pages';
-import ProfilePage from '@/pages/profile';
+import Profile from '@/pages/profile';
 import ProfileEdit from '@/pages/profile/edit-profile';
+
 
 export default function Router() {
   const routes = [
@@ -20,9 +21,11 @@ export default function Router() {
         path: '/register',
         element: <Register />,
       },
+
+
       {
         path: '/profile',
-        element: <ProfilePage />,
+        element: <Profile />,
       },
       {
         path: '/profile-edit',

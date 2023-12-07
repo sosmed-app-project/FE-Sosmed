@@ -22,7 +22,7 @@ const Sidebar = ({ children }: SidebarProps) => {
           <li className="mb-2">
             <a
               onClick={handleFeed}
-              className=" block text-start cursor-pointer text-black font-semibold p-3 transition-all duration-300 bg-gray-100 hover:bg-gray-400   hover:shadow-md hover:rounded-lg"
+              className=" block text-start text-black font-semibold p-3 transition-all duration-300 bg-gray-100 hover:bg-gray-400   hover:shadow-md hover:rounded-lg"
             >
               <i className="fa-solid fa-house w-11"> </i> New Feed
             </a>

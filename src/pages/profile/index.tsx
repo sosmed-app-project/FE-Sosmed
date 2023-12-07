@@ -4,6 +4,7 @@ import Navbar from "@/components/navbar";
 import { useNavigate } from "react-router-dom";
 import Popup from "@/components/popup";
 
+
 const ProfilePage = () => {
   const [showConfirmation, setShowConfirmation] = useState(false);
 
@@ -13,7 +14,6 @@ const ProfilePage = () => {
   };
 
   const handleDeleteProfile = () => {
-
     setShowConfirmation(false);
   };
 
@@ -27,7 +27,7 @@ const ProfilePage = () => {
           </h1>
           <div className="grid grid-cols-2 gap-4 mt-8 p-4">
             {/* Bagian kiri: Foto profil dan tombol edit */}
-            <div className="grid col-1 justify-center">
+            <div className="grid col-1 justify-center ">
               <div>
                 {/* Foto profil */}
                 <img
@@ -38,7 +38,7 @@ const ProfilePage = () => {
               </div>
 
               {/* Tombol edit profil */}
-              <div className="flex justify-center gap-2">
+              <div className="flex justify-center gap-4">
                 <Button
                   label="Edit Profile"
                   classname="  text-white rounded-md bg-blue-600 py-2 px-2 hover:bg-blue-700"
@@ -60,12 +60,6 @@ const ProfilePage = () => {
                 <div className="rounded bg-gray-100 p-2">ARMAN</div>
               </div>
 
-              {/* Email */}
-              <div className="mb-4">
-                <h3 className="font-semibold mb-2">Email:</h3>
-                <div className="rounded bg-gray-100 p-2">Sosial@gmail.com</div>
-              </div>
-
               {/* Tanggal Lahir */}
               <div className="mb-4">
                 <h3 className="font-semibold mb-2">Tanggal Lahir:</h3>
@@ -78,6 +72,12 @@ const ProfilePage = () => {
                 <div className="w-full rounded bg-gray-100 p-2">
                   1231312313131
                 </div>
+              </div>
+
+                 {/* Email */}
+                 <div className="mb-4">
+                <h3 className="font-semibold mb-2">Email:</h3>
+                <div className="rounded bg-gray-100 p-2">Sosial@gmail.com</div>
               </div>
             </div>
           </div>
