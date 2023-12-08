@@ -20,17 +20,17 @@ const ProfileEdit = () => {
   };
 
   useEffect(() => {
-    // Menggunakan Axios untuk fetching data dari API
-    axios.get('https://jsonplaceholder.typicode.com/users/1') // Ganti dengan URL API yang sesuai
+
+    axios.get('https://jsonplaceholder.typicode.com/users/1') 
       .then(response => {
         const data = response.data;
-        // Menetapkan data dari API ke state
+   
         setUserData({
           name: data.name,
           email: data.email,
           birthdate: data.birthdate,
           phone: data.phone,
-          password: "**************", // Jangan tampilkan password dari API
+          password: "**************", 
         });
       })
       .catch(error => {
