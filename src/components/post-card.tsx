@@ -1,5 +1,7 @@
 import React, { useRef, useEffect, useState } from "react";
 import Popup from "./popup";
+import axios from "axios";
+import Button from "./bottom";
 
 interface Post {
   id: number;
@@ -22,6 +24,7 @@ interface PostCardProps {
   onImageUpload: (image: string) => void;
   onCommentAdd: (postId: number, comment: Comment) => void;
   onLike: (postId: number) => void;
+  onUpdatePost: (updatedPost: Post) => void;
 }
 
 const PostCard = ({
@@ -29,6 +32,7 @@ const PostCard = ({
   onImageUpload,
   onCommentAdd,
   onLike,
+  onUpdatePost,
 }: PostCardProps) => {
   const { id, user, avatar, status, image, comments, likes } = post;
   const [commentInput, setCommentInput] = useState("");
@@ -38,6 +42,10 @@ const PostCard = ({
   const [showPopup, setShowPopup] = useState<boolean>(false);
   const [showConfirmation, setShowConfirmation] = useState(false);
   const [showPopup1, setShowPopup1] = useState(false);
+  const [editedPost, setEditedPost] = useState<Post>({ ...post });
+  const [editedImage, setEditedImage] = useState<string | undefined>(
+    post.image
+  );
 
   const handleImageUpload = (e: React.ChangeEvent<HTMLInputElement>) => {
     const file = e.target.files?.[0];
@@ -45,7 +53,7 @@ const PostCard = ({
       const reader = new FileReader();
       reader.onloadend = () => {
         const uploadedImage = reader.result as string;
-        onImageUpload(uploadedImage);
+        setEditedImage(uploadedImage); // Mengupdate state untuk gambar yang diunggah
       };
       reader.readAsDataURL(file);
     }
@@ -79,12 +87,19 @@ const PostCard = ({
       document.removeEventListener("click", handleClickOutside);
     };
   }, []);
+
   const handleOptionsMenuClick = () => {
     setShowOptionsMenu(!showOptionsMenu);
   };
 
   const handleEditPost = () => {
-    setShowPopup(true); // Saat "Edit Postingan" diklik, tampilkan pop-up
+    setShowPopup(true); // Tampilkan pop-up saat "Edit Postingan" diklik
+    setEditedPost({ ...post }); // Set data yang diedit dengan data dari post yang ada
+  };
+
+  const handleFormChange = (e: React.ChangeEvent<HTMLInputElement>) => {
+    const { name, value } = e.target;
+    setEditedPost({ ...editedPost, [name]: value });
   };
 
   const handleDeletePost = () => {
@@ -94,14 +109,33 @@ const PostCard = ({
     setShowConfirmation(false);
   };
 
+  const handleEditData = () => {
+    axios
+      .put(
+        `https://jsonplaceholder.typicode.com/posts/${editedPost.id}`,
+        editedPost
+      )
+      .then((response) => {
+        console.log("Data updated:", response.data);
+        setShowPopup(false); // Menyembunyikan pop-up setelah berhasil menyimpan perubahan
+        // Jika ingin memperbarui state post dengan data yang sudah diubah, bisa dilakukan dengan
+        onUpdatePost({ ...post, ...editedPost });
+      })
+
+      .catch((error) => {
+        console.error("Failed to update data:", error);
+        // Tambahkan logika penanganan kesalahan di sini
+      });
+  };
+
   return (
     <div key={id} className="bg-white w-96 p-8 rounded-lg shadow-md relative">
-      <div className=" flex items-center justify-between mb-4">
+      <div className="flex items-center justify-between mb-4">
         <div className="flex items-center">
           <img
             src={avatar}
             alt="Profile"
-            className="h-8 w-8 rounded-full mr-2 "
+            className="h-8 w-8 rounded-full mr-2"
           />
           <div className="">
             <h3 className="font-semibold">{user}</h3>
@@ -138,6 +172,7 @@ const PostCard = ({
           )}
         </div>
       </div>
+
       <div style={{ maxWidth: "calc(100% - 2.5rem)" }}>
         <p className="w-full break-words">{status}</p>
         {/* Input untuk upload gambar */}
@@ -155,28 +190,31 @@ const PostCard = ({
           </div>
         )}
         <div className="flex items-center justify-between mt-2">
-          <div className="flex items-center">
-            <button onClick={() => onLike(id)}>{likes}</button>
-            <span className="mx-2">•</span>
+          <div className="flex items-start">
+            <button onClick={() => onLike(id)}>{likes} Likes</button>
+          </div>
+
+          <div className="flex items-end">
             <button onClick={() => setShowCommentInput(!showCommentInput)}>
               Comment
             </button>
           </div>
         </div>
+
         {/* Menampilkan input komentar jika tombol comment diklik */}
         {showCommentInput && (
-          <div className="mt-2">
-            <input
-              type="text"
-              placeholder="Add a comment..."
-              value={commentInput}
-              onChange={(e) => setCommentInput(e.target.value)}
-              className="border border-gray-300 p-1 rounded-md"
-            />
-            <button onClick={handleCommentSubmit} className="ml-2">
-              Post
-            </button>
-          </div>
+          <div className="mt-2 flex justify-center">
+          <input
+            type="text"
+            placeholder="Add a comment..."
+            value={commentInput}
+            onChange={(e) => setCommentInput(e.target.value)}
+            className="border border-gray-300 p-1 rounded-md w-full"
+          />
+          <button onClick={handleCommentSubmit} className="ml-2">
+            Post
+          </button>
+        </div>
         )}
         {/* Menampilkan daftar komentar */}
         <div className="mt-2">
@@ -187,40 +225,63 @@ const PostCard = ({
             </div>
           ))}
         </div>
+        {/* Bagian pop-up untuk edit postingan */}
         {showPopup && (
-          <div className="fixed top-0 left-0 flex items-center justify-center w-full h-full bg-black bg-opacity-50">
-            <div className="bg-white p-8 rounded-lg shadow-md">
-              <textarea
-                placeholder="Update your status..."
-                value=""
-                className="w-full h-32 border bg-gray-200 p-2 rounded-sm resize-none mb-4"
-              ></textarea>
-              <input
-                type="file"
-                id="imageUpload"
-                accept="image/*"
-                style={{ display: "none" }}
-              />
-              <label
-                htmlFor="imageUpload"
-                className="cursor-pointer bg-gray-200 px-6 py-3 rounded-md hover:bg-gray-300 w-full h-40 flex items-center justify-center"
-              >
-                <i className="fa-regular fa-square-plus"></i> Upload Gambar
-              </label>
-              <div className="flex gap-4">
-                <button className="mt-4 px-4 py-2 bg-blue-500 text-white rounded-md hover:bg-blue-600 w-full">
-                  Post
-                </button>
-                <button
-                  onClick={() => setShowPopup(false)} // Saat "Close" diklik, sembunyikan pop-up
-                  className="mt-4 px-4 py-2 bg-gray-300 text-black rounded-md hover:bg-gray-400 w-full"
+          <div className="fixed inset-0 z-50 flex items-center justify-center bg-black bg-opacity-50">
+            <div className="bg-white w-96 p-8 rounded-lg shadow-md">
+              <form onSubmit={handleEditData}>
+                <input
+                  type="text"
+                  name="status"
+                  value={editedPost.status}
+                  onChange={handleFormChange}
+                  className="w-full h-full border bg-gray-200 p-2 rounded-sm resize-none mb-4"
+                />
+                {/* Input untuk unggah gambar */}
+                <input
+                  type="file"
+                  id={`imageUpload_${id}`}
+                  accept="image/*"
+                  style={{ display: "none" }}
+                  onChange={handleImageUpload}
+                />
+                {/* Tampilkan gambar yang diunggah jika ada */}
+                {editedImage && (
+                  <div className="mt-2">
+                    <img
+                      src={editedImage}
+                      alt="Uploaded"
+                      className="w-full rounded-md"
+                    />
+                  </div>
+                )}
+                {/* Tombol untuk memilih gambar */}
+                <label
+                  htmlFor={`imageUpload_${id}`}
+                  className="cursor-pointer bg-gray-200 px-6 py-3 rounded-md hover:bg-gray-300 w-full h-full flex items-center justify-center"
                 >
-                  Close
-                </button>
-              </div>
+                  <i className="fa-regular fa-square-plus"></i> Upload Gambar
+                </label>
+                {/* Bagian lain dari form */}
+                <div className="flex gap-4">
+                  <button
+                    type="submit"
+                    className="mt-4 px-4 py-2 bg-blue-500 text-white rounded-md hover:bg-blue-600 w-full"
+                  >
+                    Simpan
+                  </button>
+                  <button
+                    onClick={() => setShowPopup(false)}
+                    className="mt-4 px-4 py-2 bg-gray-300 text-black rounded-md hover:bg-gray-400 w-full"
+                  >
+                    Close
+                  </button>
+                </div>
+              </form>
             </div>
           </div>
         )}
+
         <Popup
           isOpen={showConfirmation}
           onClose={() => setShowConfirmation(false)}
@@ -263,7 +324,7 @@ const PostCard = ({
                   )}
                 </div>
               </div>
-              
+
               {/* Kolom Kanan untuk Menampilkan Komentar */}
               <div>
                 <div>
@@ -287,23 +348,21 @@ const PostCard = ({
                     </div>
                   ))}
                   <div className="flex mt-8 ">
-                 
                     <img
                       src={avatar}
                       alt="Profile"
                       className="h-8 w-8 rounded-full mr-2 "
                     />
-             
+
                     <input
                       type="text"
                       placeholder="Tulis komentar..."
                       value={commentInput}
                       onChange={(e) => setCommentInput(e.target.value)}
                       className="border border-gray-300 p-1 rounded-md"
-                      
                     />
                     <button onClick={handleCommentSubmit} className="ml-2">
-                    <i className="fa-solid fa-paper-plane"></i> Post
+                      <i className="fa-solid fa-paper-plane"></i> Post
                     </button>
                   </div>
                 </div>

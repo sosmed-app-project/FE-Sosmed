@@ -76,7 +76,7 @@ const Register = () => {
       });
   };
   return (
-    <div className="grid grid-cols-1 md:grid-cols-2 bg-blue-200 justify-center items-center min-h-screen">
+    <div className="grid grid-cols-1 md:grid-cols-2 bg-cyan-300 justify-center items-center min-h-screen">
       {/* Form Register */}
       <form className="w-4/5 p-10 md:ml-10" onSubmit={handleSubmit}>
         <h2 className="text-2xl font-semibold mb-4 text-center">Register</h2>

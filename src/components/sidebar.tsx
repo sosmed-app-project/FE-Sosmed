@@ -11,18 +11,21 @@ const Sidebar = ({ children }: SidebarProps) => {
     navigate("/profile");   
   };
   const handleFeed = () => {
+    navigate("/home");   
+  };
+  const handleLogout = () => {
     navigate("/");   
   };
 
   return (
     <div className="flex h-screen mt-20">
-      <div className="hidden md:block md:w-1/4 bg-gray-100 p-4 ">
+      <div className="hidden md:block md:w-1/4 bg-cyan-300 p-4 ">
         {/* Sidebar Content */}
         <ul>
           <li className="mb-2">
             <a
               onClick={handleFeed}
-              className=" block text-start text-black font-semibold p-3 transition-all duration-300 bg-gray-100 hover:bg-gray-400   hover:shadow-md hover:rounded-lg"
+              className=" block text-start text-black font-semibold p-3 transition-all duration-300 bg-cyan-300 hover:bg-cyan-500   hover:shadow-md hover:rounded-lg"
             >
               <i className="fa-solid fa-house w-11"> </i> New Feed
             </a>
@@ -30,17 +33,17 @@ const Sidebar = ({ children }: SidebarProps) => {
           <li>
             <a
               onClick={handleProfile}
-              className="block text-start cursor-pointer text-black font-semibold p-3 transition-all duration-300 bg-gray-100 hover:bg-gray-400   hover:shadow-md hover:rounded-lg"
+              className="block text-start cursor-pointer text-black font-semibold p-3 transition-all duration-300 bg-cyan-300 hover:bg-cyan-500   hover:shadow-md hover:rounded-lg"
             >
               <i className="fa-regular fa-circle-user w-11 " ></i> Profile
             </a>
           </li>
           <li>
             <a
-              href="#darkmode"
-              className="block text-start text-black font-semibold p-3 transition-all duration-300 bg-gray-100 hover:bg-gray-400   hover:shadow-md hover:rounded-lg"
+               onClick={handleLogout}
+              className="block text-start text-black font-semibold p-3 transition-all duration-300 bg-cyan-300 hover:bg-cyan-500   hover:shadow-md hover:rounded-lg"
             >
-              <i className="fa-solid fa-circle-half-stroke w-11"></i> Dark Mode
+              <i className="fa-solid fa-circle-half-stroke w-11"></i> LogOut
             </a>
           </li>
         </ul>
@@ -50,7 +53,7 @@ const Sidebar = ({ children }: SidebarProps) => {
         {children}
       </div>
 
-      <div className="hidden md:block md:w-1/4 bg-gray-100 p-4">
+      <div className="hidden md:block md:w-1/4 bg-cyan-300 p-4">
         {/* Sidebar Content */}
         <ul>
           <li className="mb-4">
