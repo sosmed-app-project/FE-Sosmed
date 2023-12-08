@@ -10,11 +10,11 @@ import ProfileEdit from '@/pages/profile/edit-profile';
 export default function Router() {
   const routes = [
     {
-      path: '/',
+      path: '/home',
       element: <Home />,
     },
     {
-        path: '/login',
+        path: '/',
         element: <Login />,
       },
       {
