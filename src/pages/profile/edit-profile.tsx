@@ -1,27 +1,76 @@
-import React from "react";
+import React, { useState, useEffect } from "react";
 import Button from "@/components/bottom";
 import Navbar from "@/components/navbar";
+import axios from "axios";
 import { useNavigate } from "react-router-dom";
+import Swal from "sweetalert2";
 
 const ProfileEdit = () => {
   const navigate = useNavigate();
+  const [userData, setUserData] = useState({
+    name: "ARMAN",
+    email: "sosial@gmail.com",
+    birthdate: "20-05-1997",
+    phone: "1231312313131",
+    password: "**************",
+  });
+
   const handleSimpan = () => {
-    
-    navigate("/profile");
+   ;
   };
+
+  useEffect(() => {
+    // Menggunakan Axios untuk fetching data dari API
+    axios.get('https://jsonplaceholder.typicode.com/users/1') // Ganti dengan URL API yang sesuai
+      .then(response => {
+        const data = response.data;
+        // Menetapkan data dari API ke state
+        setUserData({
+          name: data.name,
+          email: data.email,
+          birthdate: data.birthdate,
+          phone: data.phone,
+          password: "**************", // Jangan tampilkan password dari API
+        });
+      })
+      .catch(error => {
+        console.error('Error fetching data:', error);
+      });
+  }, []);
+
+  const handleUpdateProfile = () => {
+    
+
+    axios.put('https://jsonplaceholder.typicode.com/users/1', userData) 
+      .then(response => {
+        Swal.fire({
+          icon: 'success',
+          title: 'Success',
+          text: 'Profile updated successfully!',
+        });
+        navigate("/profile");
+      
+      })
+      .catch(error => {
+        Swal.fire({
+          icon: 'error',
+          title: 'Oops...',
+          text: 'Failed to update profile!',
+        });
+      });
+  };
+
   return (
     <section>
       <Navbar />
-      <div className="bg-gray-200 p-16 mt-8 min-h-screen">
+      <div className="bg-cyan-300 p-16 mt-8 min-h-screen">
         <div className="bg-white p-10 rounded-xl">
           <h1 className="flex justify-center  font-semibold text-3xl">
             Personal Data
           </h1>
           <div className="grid grid-cols-2 gap-4 mt-4 p-4">
-            {/* Bagian kiri: Foto profil dan tombol edit */}
             <div className="grid col-1 justify-center">
               <div>
-                {/* Foto profil */}
                 <img
                   src="https://via.placeholder.com/150"
                   alt="Profile"
@@ -31,21 +80,17 @@ const ProfileEdit = () => {
                   Change Picture
                 </h1>
               </div>
-              {/* Tombol Simpan perubahan */}
               <div className="grid justify-center ">
                 <Button
-                  label="Simpan"
-                  classname="  text-white rounded-md bg-blue-600 py-2 px-2 hover:bg-blue-700 w-20"
-                  onClick={handleSimpan}
+                  label="Update Profile"
+                  classname="  text-white rounded-md bg-blue-600 py-2 px-2 hover:bg-blue-700 w-32"
+                  onClick={handleUpdateProfile}
                 />
               </div>
             </div>
 
-            {/* Bagian kanan: Form informasi profil */}
             <div className="col-span-1">
-              {/* Nama */}
               <form>
-                {/* Nama */}
                 <div className="mb-4">
                   <label htmlFor="name" className="font-semibold mb-2">
                     Nama:
@@ -55,11 +100,13 @@ const ProfileEdit = () => {
                     id="name"
                     name="name"
                     className="border border-gray-300 p-2 rounded-md w-full"
-                    defaultValue="ARMAN"
+                    value={userData.name}
+                    onChange={(e) =>
+                      setUserData({ ...userData, name: e.target.value })
+                    }
                   />
                 </div>
 
-                {/* Email */}
                 <div className="mb-4">
                   <label htmlFor="email" className="font-semibold mb-2">
                     Email:
@@ -69,11 +116,13 @@ const ProfileEdit = () => {
                     id="email"
                     name="email"
                     className="border border-gray-300 p-2 rounded-md w-full"
-                    defaultValue="Sosial@gmail.com"
+                    value={userData.email}
+                    onChange={(e) =>
+                      setUserData({ ...userData, email: e.target.value })
+                    }
                   />
                 </div>
 
-                {/* Tanggal Lahir */}
                 <div className="mb-4">
                   <label htmlFor="birthdate" className="font-semibold mb-2">
                     Tanggal Lahir:
@@ -83,11 +132,13 @@ const ProfileEdit = () => {
                     id="birthdate"
                     name="birthdate"
                     className="border border-gray-300 p-2 rounded-md w-full"
-                    defaultValue="20-05-1997"
+                    value={userData.birthdate}
+                    onChange={(e) =>
+                      setUserData({ ...userData, birthdate: e.target.value })
+                    }
                   />
                 </div>
 
-                {/* Nomor Telepon */}
                 <div className="mb-4">
                   <label htmlFor="phone" className="font-semibold mb-2">
                     Nomor Telepon:
@@ -97,11 +148,13 @@ const ProfileEdit = () => {
                     id="phone"
                     name="phone"
                     className="border border-gray-300 p-2 rounded-md w-full"
-                    defaultValue="1231312313131"
+                    value={userData.phone}
+                    onChange={(e) =>
+                      setUserData({ ...userData, phone: e.target.value })
+                    }
                   />
                 </div>
 
-                {/* Password */}
                 <div className="mb-4">
                   <label htmlFor="Password" className="font-semibold mb-2">
                     Password:
@@ -111,10 +164,14 @@ const ProfileEdit = () => {
                     id="Password"
                     name="Password"
                     className="border border-gray-300 p-2 rounded-md w-full"
-                    defaultValue="**************"
+                    value={userData.password}
+                    onChange={(e) =>
+                      setUserData({ ...userData, password: e.target.value })
+                    }
                   />
                 </div>
               </form>
+              
             </div>
           </div>
         </div>

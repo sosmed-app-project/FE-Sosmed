@@ -10,7 +10,7 @@ interface ButtonProps {
 const Button: FC<ButtonProps> = ({label, classname, icon, onClick}) => {
   return (
     <div>
-        <button onClick={onClick} className={`${classname ? `${classname}` : 'text-white'} hover:border-inherit focus:outline-inherit`}> <span>{icon}</span> {label}</button>
+        <button onClick={onClick} className={`${classname ? `${classname}` : 'text-white'} w-full hover:border-inherit focus:outline-inherit`}> <span>{icon}</span> {label}</button>
     </div>
   )
 }

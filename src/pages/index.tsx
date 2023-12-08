@@ -1,7 +1,9 @@
-import React, { useState } from "react";
+import  { useState } from "react";
 import Navbar from "@/components/navbar";
 import Sidebar from "@/components/sidebar";
 import PostCard from "@/components/post-card";
+import Card from "@/components/card-get-post";
+import Logo from "@/assets/rosa.jpg"
 
 interface Post {
   id: number;
@@ -18,21 +20,30 @@ interface Comment {
   user: string;
   content: string;
 }
+const data = {
+  data: [
+    {
+      caption: "Kesempurnaan bukanlah tanda dari keindahan, tetapi keindahan bisa ditemukan dalam ketidaksempurnaan",
+      photoURL: "https://gcp.com/hellokamu.jpg",
+    },
+  ],
+};
 
 const Index = () => {
   const [posts, setPosts] = useState<Post[]>([]);
-  const [statusInput, setStatusInput] = useState<string>("");
-  const [imageInput, setImageInput] = useState<string>("");
+  const [caption, setStatusInput] = useState<string>("");
+  const [photoURL, setImageInput] = useState<string>("");
   const [showPopup, setShowPopup] = useState<boolean>(false);
+  const { data: cardsData } = data;
 
   const handleStatusUpdate = () => {
-    if (statusInput.trim() !== "") {
+    if (caption.trim() !== "") {
       const newPost: Post = {
         id: Date.now(),
         user: "Your Name",
         avatar: "https://via.placeholder.com/40",
-        status: statusInput,
-        image: imageInput || undefined,
+        status: caption,
+        image: photoURL || undefined,
         comments: [],
         likes: 0,
       };
@@ -45,6 +56,10 @@ const Index = () => {
 
   const handleImageUpload = (image: string) => {
     setImageInput(image);
+  };
+  const handleUpdatePost = (updatedPost: Post) => {
+    const updatedPosts = posts.map((p) => (p.id === updatedPost.id ? updatedPost : p));
+    setPosts(updatedPosts);
   };
 
   return (
@@ -62,7 +77,7 @@ const Index = () => {
               />
               <textarea
                 placeholder="What's on your mind?"
-                value={statusInput}
+                value={caption}
                 onClick={() => setShowPopup(true)}
                 onChange={(e) => setStatusInput(e.target.value)}
                 className="w-full h-11 border border-gray-300  p-2 rounded-sm resize-none"
@@ -80,7 +95,7 @@ const Index = () => {
               </div>
             )}
             <div
-              className="flex items-center mb-4 cursor-pointer"
+              className="flex justify-center items-center mb-4 cursor-pointer"
               onClick={() => setShowPopup(true)}
             >
               <i className="fa-regular fa-image w-8"></i> Foto
@@ -107,16 +122,52 @@ const Index = () => {
                 );
                 setPosts(updatedPosts);
               }}
+              onUpdatePost={handleUpdatePost}
             />
           ))}
+          <div className=" grid grid-col ">
+            {cardsData.map((card: any) => (
+              <Card
+                key={card.posting_id}
+                avatar= {Logo}
+                user="Your Name"
+                caption={card.caption}
+                photoURL={card.photoURL}
+              />
+            ))}
+          </div>
+          <div className=" grid grid-col ">
+            {cardsData.map((card: any) => (
+              <Card
+                key={card.posting_id}
+                avatar= {Logo}
+                user="Your Name"
+                caption={card.caption}
+                photoURL={card.photoURL}
+              />
+            ))}
+          </div>
+          <div className=" grid grid-col ">
+            {cardsData.map((card: any) => (
+              <Card
+                key={card.posting_id}
+                avatar= {Logo}
+                user="Your Name"
+                caption={card.caption}
+                photoURL={card.photoURL}
+              />
+            ))}
+          </div>
+          
         </div>
+        
+
         {showPopup && (
           <div className="fixed top-0 left-0 flex items-center justify-center w-full h-full bg-black bg-opacity-50">
             <div className="bg-white p-8 rounded-lg shadow-md">
-              
               <textarea
                 placeholder="Update your status..."
-                value={statusInput}
+                value={caption}
                 onChange={(e) => setStatusInput(e.target.value)}
                 className="w-full h-32 border bg-gray-200 p-2 rounded-sm resize-none mb-4"
               ></textarea>

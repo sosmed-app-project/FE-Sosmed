@@ -2,11 +2,13 @@ import { useState } from "react";
 import Button from "@/components/bottom";
 import Navbar from "@/components/navbar";
 import { useNavigate } from "react-router-dom";
-import Popup from "@/components/popup";
+
+import Swal from "sweetalert2";
+import axios from "axios";
 
 
 const ProfilePage = () => {
-  const [showConfirmation, setShowConfirmation] = useState(false);
+ 
 
   const navigate = useNavigate();
   const handleEdit = () => {
@@ -14,13 +16,44 @@ const ProfilePage = () => {
   };
 
   const handleDeleteProfile = () => {
-    setShowConfirmation(false);
+    // Tampilkan SweetAlert untuk konfirmasi penghapusan
+    Swal.fire({
+      title: "Apakah Anda yakin?",
+      text: "Ketika Anda tekan 'Ya', data profil ini akan dihapus.",
+      icon: "warning",
+      showCancelButton: true,
+      confirmButtonColor: "#d33",
+      cancelButtonColor: "#3085d6",
+      confirmButtonText: "Ya, Hapus",
+      cancelButtonText: "Batal",
+    }).then((result) => {
+      if (result.isConfirmed) {
+        // Simulasi penghapusan data menggunakan API dummy
+        axios.delete("https://jsonplaceholder.typicode.com/posts/1")
+          .then(() => {
+            Swal.fire({
+              title: "Success",
+              text: "Profil berhasil dihapus.",
+              icon: "success",
+            });
+           
+           
+          })
+          .catch(() => {
+            Swal.fire({
+              title: "Error",
+              text: "Gagal menghapus profil.",
+              icon: "error",
+            });
+          });
+      }
+    });
   };
 
   return (
     <section>
       <Navbar />
-      <div className="bg-gray-200 p-16 mt-8">
+      <div className="bg-cyan-300 p-16 mt-8">
         <div className="bg-white p-10 rounded-xl">
           <h1 className="flex justify-center mt-10 font-semibold text-3xl">
             Personal Data
@@ -47,7 +80,7 @@ const ProfilePage = () => {
                 <Button
                   label="Delete Profile"
                   classname="   text-white rounded-md bg-blue-600 py-2 px-2 hover:bg-blue-700"
-                  onClick={() => setShowConfirmation(true)}
+                  onClick={handleDeleteProfile}
                 />
               </div>
             </div>
@@ -83,29 +116,7 @@ const ProfilePage = () => {
           </div>
         </div>
       </div>
-      <Popup
-        isOpen={showConfirmation}
-        onClose={() => setShowConfirmation(false)}
-      >
-        <div>
-          <p>Apakah anda yakin menghapus data profile ini?</p>
-          <p>Ketika anda tekan hapus maka data profile ini akan hilang</p>
-          <div className="flex justify-end mt-4">
-            <button
-              onClick={handleDeleteProfile}
-              className="mr-2 px-4 py-2 bg-blue-500 text-white rounded-md hover:bg-blue-600"
-            >
-              Hapus
-            </button>
-            <button
-              onClick={() => setShowConfirmation(false)}
-              className="px-4 py-2 bg-gray-300 text-black rounded-md hover:bg-gray-400"
-            >
-              Batal
-            </button>
-          </div>
-        </div>
-      </Popup>
+      
     </section>
   );
 };

@@ -8,6 +8,10 @@ import Swal from "sweetalert2";
 
 const login = () => {
   const navigate = useNavigate();
+  
+  const handleRegister = () => {
+    navigate("/register");   
+  };
   const [formData, setFormData] = useState({
     email: "",
     password: "",
@@ -47,7 +51,7 @@ const login = () => {
   };
 
   return (
-    <div className="grid grid-cols-1 md:grid-cols-2 bg-blue-200 justify-center items-center min-h-screen">
+    <div className="grid grid-cols-1 md:grid-cols-2 bg-cyan-300 justify-center items-center min-h-screen">
       {/* Form Login */}
       <form className="w-4/5 p-10 md:ml-10">
         <h2 className="text-2xl font-semibold mb-4 text-center">Login</h2>
@@ -75,6 +79,13 @@ const login = () => {
             onChange={handleChange}
           />
         </div>
+
+        <button 
+      onClick={handleRegister}
+      className=" text-blue-500 font-semibold mb-5  "
+    >
+      Silahkan klik di sini untuk mendaftar
+    </button>
         <Button
           label="Login"
           classname="bg-blue-500 text-white py-2 px-4 rounded-md hover:bg-blue-600"

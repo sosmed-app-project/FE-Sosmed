@@ -1,4 +1,4 @@
-import React, { useState } from "react";
+import  { useState } from "react";
 import Logo from "../assets/social hub.png";
 import { useNavigate } from "react-router-dom";
 
@@ -6,20 +6,22 @@ const Navbar = () => {
 
   const navigate = useNavigate();
   const handleHome = () => {
-    navigate("/");   
+    navigate("/home");   
   };
   
   const handleProfile = () => {
     navigate("/profile");
   };
-
+  const handleLogout = () => {
+    navigate("/");
+  };
   const [isMenuOpen, setIsMenuOpen] = useState(false);
 
   const toggleMenu = () => {
     setIsMenuOpen(!isMenuOpen);
   };
   return (
-    <nav className="fixed top-0 left-0 right-0 z-10 flex items-center justify-between bg-gray-100 rounded-lg shadow-md px-4">
+    <nav className="fixed top-0 left-0 right-0 z-10 flex items-center justify-between bg-cyan-300 rounded-lg shadow-md px-4">
       {/* Logo */}
       <div className="flex items-center">
         <img src={Logo} alt="Logo" className="h-20 mr-4" />
@@ -42,7 +44,7 @@ const Navbar = () => {
               <div className="absolute top-12 right-0 bg-white shadow-md rounded-md p-2 w-32">
                 <ul>
                   <li className="hover:bg-gray-100 rounded-sm cursor-pointer py-2 px-3"onClick={handleProfile}>Profile</li>
-                  <li className="hover:bg-gray-100 rounded-sm cursor-pointer py-2 px-3" >Dark Mode</li>
+                  <li className="hover:bg-gray-100 rounded-sm cursor-pointer py-2 px-3" onClick={handleLogout} >Logout</li>
                 </ul>
               </div>
             )}
