@@ -1,114 +1,113 @@
-import * as z from "zod"
-import { zodResolver } from "@hookform/resolvers/zod"
-import { useForm } from "react-hook-form"
+import { useState } from "react";
+import Button from "@/components/bottom";
+import Navbar from "@/components/navbar";
+import { useNavigate } from "react-router-dom";
+import Popup from "@/components/popup";
 
-import Layout from '@/components/layout';
-import { Form, FormControl, FormDescription, FormField, FormItem, FormLabel, FormMessage } from '@/components/ui/form';
-import { Button } from '@/components/ui/button';
-import { Input } from "@/components/ui/input";
+const ProfilePage = () => {
+  const [showConfirmation, setShowConfirmation] = useState(false);
 
-const formSchema = z.object({
-  username: z.string().min(2, {message: "Username must be at least 2 characters.",}),
-  tanggallahir: z.string().min(2, {message: "Birth Date.",}),
-  hp: z.string().min(2, {message: "Phone number must be at least 9 characters.",}),
-  email: z.string().min(2, {message: "Email.",}),
+  const navigate = useNavigate();
+  const handleEdit = () => {
+    navigate("/profile-edit");
+  };
 
-})
+  const handleDeleteProfile = () => {
 
-const Profile = () => {
-  const form = useForm<z.infer<typeof formSchema>>({
-    resolver: zodResolver(formSchema),
-    defaultValues: {
-      username: "",
-      tanggallahir: "",
-      hp: "",
-      email: "",
-
-    },
-  })
-
-  function onSubmit(values: z.infer<typeof formSchema>) {
-    // Do something with the form values.
-    // ✅ This will be type-safe and validated.
-    console.log(values)
-  }
+    setShowConfirmation(false);
+  };
 
   return (
-    <Layout>
-      <figure className="aspect-square bg-white border-80">
-    <Form {...form}>
-      <div>
-      <h1 className="font-bold h2-bold md:h2-bold pt-5 sm:pt-12">Personal Data</h1>
+    <section>
+      <Navbar />
+      <div className="bg-blue-200 p-16 mt-8">
+        <div className="bg-white p-10 rounded-xl">
+          <h1 className="flex justify-center mt-10 font-semibold text-3xl">
+            Personal Data
+          </h1>
+          <div className="grid grid-cols-2 gap-5 mt-8 p-2">
+            {/* Bagian kiri: Foto profil dan tombol edit */}
+            <div className="grid col-2 justify-center">
+              <div>
+                {/* Foto profil */}
+                <img
+                  src="https://via.placeholder.com/150"
+                  alt="Profile"
+                  className="w-60 h-60 rounded-full"
+                />
+              </div>
+
+              {/* Tombol edit profil */}
+              <div className="flex justify-center gap-5">
+                <Button
+                  label="Edit Profile"
+                  classname="  text-black rounded-md bg-gray-400 py-2 px-2 hover:bg-blue-700 hover:text-white"
+                  onClick={handleEdit}
+                />
+                <Button
+                  label="Delete Profile"
+                  classname="   text-black rounded-md bg-gray-400 py-2 px-2 hover:bg-blue-700 hover:text-white"
+                  onClick={() => setShowConfirmation(true)}
+                />
+              </div>
+            </div>
+
+            {/* Bagian kanan: Form informasi profil */}
+            <div className="col-span-1">
+              {/* Nama */}
+              <div className="mb-4">
+                <h3 className="font-semibold mb-2">Nama:</h3>
+                <div className="rounded bg-gray-200 p-2">ARMAN</div>
+              </div>
+
+              {/* Email */}
+              <div className="mb-4">
+                <h3 className="font-semibold mb-2">Email:</h3>
+                <div className="rounded bg-gray-200 p-2">Sosial@gmail.com</div>
+              </div>
+
+              {/* Tanggal Lahir */}
+              <div className="mb-4">
+                <h3 className="font-semibold mb-2">Tanggal Lahir:</h3>
+                <div className="rounded bg-gray-200 p-2">20-05-1997</div>
+              </div>
+
+              {/* Nomor Telepon */}
+              <div className="mb-4">
+                <h3 className="font-semibold mb-2">Nomor Telepon:</h3>
+                <div className="w-full rounded bg-gray-200 p-2">
+                  1231312313131
+                </div>
+              </div>
+            </div>
+          </div>
+        </div>
       </div>
-      <form onSubmit={form.handleSubmit(onSubmit)} className="space-y-8">
-      <figure className="flex w-60 h-60">
-          <img
-            className="aspect-square rounded-full object-cover"
-            src="https://via.placeholder.com/250"
-            alt="photo"
-          />
-        </figure>
-        <FormField
-          control={form.control}
-          name="username"
-          render={({ field }) => (
-            <FormItem>
-              <FormLabel>Username</FormLabel>
-              <FormControl>
-                <Input placeholder="user" {...field} />
-              </FormControl>
-              <FormMessage />
-            </FormItem>
-          )}
-        />
-        <FormField
-          control={form.control}
-          name="tanggallahir"
-          render={({ field }) => (
-            <FormItem>
-              <FormLabel>Tanggal Lahir</FormLabel>
-              <FormControl>
-                <Input placeholder="28 Mei 1997" {...field} />
-              </FormControl>
-              <FormMessage />
-            </FormItem>
-          )}
-        />
-        <FormField
-          control={form.control}
-          name="hp"
-          render={({ field }) => (
-            <FormItem>
-              <FormLabel>No Handphone</FormLabel>
-              <FormControl>
-                <Input placeholder="081212123667" {...field} />
-              </FormControl>
-              <FormMessage />
-            </FormItem>
-          )}
-        />
-        <FormField
-          control={form.control}
-          name="email"
-          render={({ field }) => (
-            <FormItem>
-              <FormLabel>Email</FormLabel>
-              <FormControl>
-                <Input placeholder="Sosial@gmail.com" {...field} />
-              </FormControl>
-              <FormMessage />
-            </FormItem>
-          )}
-        />
-        <Button type="submit" className="shad-button_primary">Edit Profile</Button>
-        <Button type="submit">Delete Profile</Button>
-      </form>
-    </Form>
-    </figure>
-    </Layout>
-  )
-}
+      <Popup
+        isOpen={showConfirmation}
+        onClose={() => setShowConfirmation(false)}
+      >
+        <div>
+          <p>Apakah anda yakin menghapus data profile ini?</p>
+          <p>Ketika anda tekan hapus maka data profile ini akan hilang</p>
+          <div className="flex justify-end mt-4">
+            <button
+              onClick={handleDeleteProfile}
+              className="mr-2 px-4 py-2 bg-blue-500 text-white rounded-md hover:bg-blue-600"
+            >
+              Hapus
+            </button>
+            <button
+              onClick={() => setShowConfirmation(false)}
+              className="px-4 py-2 bg-gray-300 text-black rounded-md hover:bg-gray-400"
+            >
+              Batal
+            </button>
+          </div>
+        </div>
+      </Popup>
+    </section>
+  );
+};
 
-
-
-export default Profile;
+export default ProfilePage;
